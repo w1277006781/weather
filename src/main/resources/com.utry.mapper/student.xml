@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC " http://mybatis.org/dtd/mybatis-3-mapper.dtd" "mybatis-3-mapper.dtd" >
+<mapper namespace="com.utry.dao.StudentDao">
+   <select id="queryAll" resultType="com.utry.entity.StudentEntity">
+
+       select * from student
+   </select>
+
+    <insert id="insert" parameterType="com.utry.entity.StudentEntity">
+
+        insert into student values(#{id},#{name},#{bir});
+    </insert>
+
+
+</mapper>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+
+    <bean class="com.alibaba.druid.pool.DruidDataSource" id="dataSource">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://localhost:3306/study"/>
+        <property name="username" value="root"/>
+        <property name="password" value="root"/>
+
+    </bean>
+
+    <!--创建sqlsesssion-->
+    <bean class="org.mybatis.spring.SqlSessionFactoryBean" id="sqlSessionFactory">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="mapperLocations" value="classpath:com.utry.mapper/*.xml"/>
+    </bean>
+
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer" id="scannerConfigurer">
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+        <property name="basePackage" value="com.utry.dao"/>
+    </bean>
+
+    <bean class="org.springframework.jdbc.datasource.DataSourceTransactionManager" id="transactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+    <tx:advice transaction-manager="transactionManager" id="txAdvice">
+        <tx:attributes>
+            <tx:method name="insert"/>
+        </tx:attributes>        
+    </tx:advice>
+  
+    <aop:config>
+        <aop:pointcut id="pc" expression="execution(* com.utry.serviceimp.*.*(..))"/>
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="pc"/>
+
+    </aop:config>
+    <bean class="com.utry.serviceimp.StudentServiceImp" id="studentService">
+        <property name="studentDao" ref="studentDao"/>
+    </bean>
+    <bean class="com.utry.action.StudentAction" id="studentAction" scope="prototype">
+        <property name="studentService" ref="studentService"></property>
+    </bean>
+
+</beans>
