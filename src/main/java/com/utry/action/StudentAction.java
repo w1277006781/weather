@@ -20,7 +20,7 @@ public class StudentAction extends ActionSupport {
     }
 
     public StudentEntity getStudent() {
-	System.out.println("-----------wUUuww热热热--------");
+	System.out.println("-----------wUUuww热热热万物--------");
 return student;
     }
 
