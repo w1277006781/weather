@@ -20,9 +20,8 @@ public class StudentAction extends ActionSupport {
     }
 
     public StudentEntity getStudent() {
-	
 	System.out.println("-----------wUUuww--------");
-        return student;
+return student;
     }
 
     public void setStudent(StudentEntity student) {
